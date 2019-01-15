@@ -16,9 +16,11 @@ pipeline {
           }
           steps {
             withCredentials([usernamePassword(credentialsId: 'ally-docker', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
-              echo 'would log into docker here'
-              echo 'would buld stage image here'
-              echo 'would push stage image here'
+              sh """
+                docker login -u ${USR} -p ${PWD} && \
+                docker image build --tag docs/docker.github.io:${VERSION} -f Dockerfile . && \
+                docker image push docs/docker.github.io:${VERSION}
+              """
             }
           }
         }
@@ -41,11 +43,18 @@ pipeline {
           steps {
             withVpn(dtrVpnAddress) {
               withCredentials(ucpBundle) {
-                echo 'would unzip ucp bundle here'
+                sh 'unzip -o $UCP' 
               }
               withCredentials([usernamePassword(credentialsId: 'ally-docker', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
-                echo 'would ssh into machine here'
-                echo 'would update docs-stage service here'
+                sh """
+                  cd ucp-bundle-success_bot
+                  export DOCKER_TLS_VERIFY=1
+                  export COMPOSE_TLS_VERSION=TLSv1_2
+                  export DOCKER_CERT_PATH=${WORKSPACE}/ucp-bundle-success_bot
+                  export DOCKER_HOST=tcp://ucp.corp-us-east-1.aws.dckr.io:443
+                  docker login -u ${USR} -p ${PWD}
+                  docker service update -d --force --image docs/docker.github.io:${VERSION} docs-stage-docker-com_docs --with-registry-auth
+                """
               }
             }
           }
