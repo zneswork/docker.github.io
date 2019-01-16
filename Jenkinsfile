@@ -11,7 +11,7 @@ pipeline {
       stages {
         stage( 'build and push stage image' ) {
           when {
-            branch 'jenkins-master'
+            branch 'master'
           }
           steps {
             withCredentials([usernamePassword(credentialsId: 'csebuildbot', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
@@ -39,7 +39,7 @@ pipeline {
         }
         stage( 'update docs-stage' ) {
           when {
-            branch 'jenkins-master'
+            branch 'master'
           }
           steps {
             withVpn(dtrVpnAddress) {
