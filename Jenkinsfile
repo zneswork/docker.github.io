@@ -17,7 +17,8 @@ pipeline {
             branch 'jenkins-master'
           }
           steps {
-            withCredentials([usernamePassword(credentialsId: 'ally-docker', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
+            echo "${env.BUILD_NUMBER}"
+            withCredentials([usernamePassword(credentialsId: 'csebuildbot', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
               sh """
                 docker login -u ${USR} -p ${PWD} && \
                 docker image build --tag docs/docker.github.io:${VERSION} -f Dockerfile . && \
@@ -28,10 +29,10 @@ pipeline {
         }
         stage( 'build and push prod image' ) {
           when {
-            branch 'jenkins-published'
+            branch 'published'
           }
           steps {
-            withCredentials([usernamePassword(credentialsId: 'ally-docker', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
+            withCredentials([usernamePassword(credentialsId: 'csebuildbot', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
               sh """
                 docker login -u ${USR} -p ${PWD} && \
                 docker image build --tag docs/docker.github.io:${VERSION} -f Dockerfile . && \
@@ -49,7 +50,7 @@ pipeline {
               withCredentials(ucpBundle) {
                 sh 'unzip -o $UCP' 
               }
-              withCredentials([usernamePassword(credentialsId: 'ally-docker', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
+              withCredentials([usernamePassword(credentialsId: 'csebuildbot', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
                 sh """
                   cd ucp-bundle-success_bot
                   export DOCKER_TLS_VERIFY=1
@@ -65,14 +66,14 @@ pipeline {
         }
         stage( 'update docs-prod' ) {
           when {
-            branch 'jenkins-published'
+            branch 'published'
           }
           steps {
             withVpn(dtrVpnAddress) {
               withCredentials(ucpBundle) {
                 sh 'unzip -o $UCP' 
               }
-              withCredentials([usernamePassword(credentialsId: 'ally-docker', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
+              withCredentials([usernamePassword(credentialsId: 'csebuildbot', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
                 sh """
                   cd ucp-bundle-success_bot
                   export DOCKER_TLS_VERIFY=1
