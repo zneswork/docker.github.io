@@ -12,7 +12,7 @@ pipeline {
       stages {
         stage( 'build and push stage image' ) {
           when {
-            branch 'jenkins-master'
+            branch 'master'
           }
           steps {
             withDockerRegistry(reg) {
@@ -38,7 +38,7 @@ pipeline {
         }
         stage( 'update docs-stage' ) {
           when {
-            branch 'jenkins-master'
+            branch 'master'
           }
           steps {
             withVpn(dtrVpnAddress) {
@@ -67,7 +67,7 @@ pipeline {
               withCredentials(ucpBundle) {
                 sh 'unzip -o $UCP' 
               }
-              withCredentials([usernamePassword(credentialsId: 'csebuildbot', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
+              withDockerRegistry(reg) {
                 sh """
                   cd ucp-bundle-success_bot
                   export DOCKER_TLS_VERIFY=1
