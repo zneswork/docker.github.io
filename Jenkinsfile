@@ -11,7 +11,7 @@ pipeline {
       stages {
         stage( 'build and push stage image' ) {
           when {
-            branch 'master'
+            branch 'master' 
           }
           steps {
             withCredentials([usernamePassword(credentialsId: 'csebuildbot', passwordVariable: 'PWD', usernameVariable: 'USR')]) {
