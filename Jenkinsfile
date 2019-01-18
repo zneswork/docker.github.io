@@ -4,6 +4,9 @@ def reg = [credentialsId: 'csebuildbot', url: 'https://index.docker.io/v1/']
 
 pipeline {
   agent none
+  options {
+    timeout(time: 1, unit: 'HOURS') 
+  }
   stages {
     stage( 'docker.github.io' ) {
       agent {
@@ -17,7 +20,7 @@ pipeline {
           steps {
             withDockerRegistry(reg) {
               sh """
-                docker image build --tag docs/docker.github.io:stage-${env.BUILD_NUMBER} -f Dockerfile . && \
+                docker image build --tag docs/docker.github.io:stage-${env.BUILD_NUMBER} . && \
                 docker image push docs/docker.github.io:stage-${env.BUILD_NUMBER}
               """
             }
@@ -30,7 +33,7 @@ pipeline {
           steps {
             withDockerRegistry(reg) {
               sh """
-                docker image build --tag docs/docker.github.io:prod-${env.BUILD_NUMBER} -f Dockerfile . && \
+                docker image build --tag docs/docker.github.io:prod-${env.BUILD_NUMBER} . && \
                 docker image push docs/docker.github.io:prod-${env.BUILD_NUMBER}
               """
             }
