@@ -51,7 +51,7 @@ pipeline {
               }
               withDockerRegistry(reg) {
                 sh """
-                  curl -X POST -H 'Content-type: application/json' --data '{"text":"Testing new Jenkins-Slack-webook --Ally"}' $slack
+                  curl -X POST -H 'Content-type: application/json' --data '{"text":"Testing new Jenkins-Slack-webook --Ally"}' ${slack}
                 """
               }
             }
