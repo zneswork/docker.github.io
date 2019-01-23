@@ -49,10 +49,12 @@ pipeline {
               withCredentials(ucpBundle) {
                 sh 'unzip -o $UCP' 
               }
-              withDockerRegistry(reg) {
-                sh """
-                  curl -X POST -H 'Content-type: application/json' --data '{"text":"Testing new Jenkins-Slack-webook --Ally"}' ${slack}
-                """
+              withCredentials(slackString) {
+                withDockerRegistry(reg) {
+                  sh """
+                    curl -X POST -H 'Content-type: application/json' --data '{"text":"Testing new Jenkins-Slack-webook --Ally"}' $slack
+                  """
+                }
               }
             }
           }
