@@ -18,8 +18,8 @@ pipeline {
           when {
             branch 'jenkins-master'
           }
-          sh "echo ${env.GIT_URL}"
           steps {
+            sh "echo ${env.GIT_URL}"
             withDockerRegistry(reg) {
               sh """
                 docker image build --tag docs/docker.github.io:stage-${env.BUILD_NUMBER} . && \
