@@ -16,8 +16,9 @@ pipeline {
       stages {
         stage( 'build and push stage image' ) {
           when {
-            branch 'master'
+            branch 'jenkins-master'
           }
+          sh "echo ${env.GIT_URL}"
           steps {
             withDockerRegistry(reg) {
               sh """
