@@ -46,13 +46,11 @@ pipeline {
             branch 'published'
           }
           steps {
-            withDockerRegistry(reg) {
-              sh """
-                docker image build --tag docs/docker.github.io:prod-${env.BUILD_NUMBER}
-                docker image push docs/docker.github.io:prod-${env.BUILD_NUMBER}
-              """
-              withVpn("$DTR_VPN_ADDRESS") {
+            withVpn("$DTR_VPN_ADDRESS") {
+              withDockerRegistry(reg) {
                 sh """
+                  docker image build --tag docs/docker.github.io:prod-${env.BUILD_NUMBER}
+                  docker image push docs/docker.github.io:prod-${env.BUILD_NUMBER}
                   unzip -o $UCP_BUNDLE
                   cd ucp-bundle-success_bot
                   export DOCKER_TLS_VERIFY=1
