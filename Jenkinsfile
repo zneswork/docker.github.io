@@ -23,7 +23,7 @@ pipeline {
       stages {
         stage( 'build + push stage image, update stage swarm' ) {
           when {
-            branch 'jenkins-master'
+            branch 'master'
           }
           steps {
             withVpn("$DTR_VPN_ADDRESS") {
@@ -49,8 +49,8 @@ pipeline {
             withVpn("$DTR_VPN_ADDRESS") {
               withDockerRegistry(reg) {
                 sh """
-                  docker image build --tag docs/docker.github.io:prod-${env.BUILD_NUMBER}
-                  docker image push docs/docker.github.io:prod-${env.BUILD_NUMBER}
+                  docker build -t docs/docker.github.io:prod-${env.BUILD_NUMBER} .
+                  docker push docs/docker.github.io:prod-${env.BUILD_NUMBER}
                   unzip -o $UCP_BUNDLE
                   cd ucp-bundle-success_bot
                   export DOCKER_TLS_VERIFY=1
@@ -73,7 +73,7 @@ pipeline {
       stages {
         stage( 'build + push beta-stage image, update beta-stage swarm' ) {
           when {
-            branch 'jenkins-test'
+            branch 'amberjack'
           }
           steps {
             withVpn("$DTR_VPN_ADDRESS") {
