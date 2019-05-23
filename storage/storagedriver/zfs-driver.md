@@ -44,7 +44,7 @@ use unless you have substantial experience with ZFS on Linux.
   and push existing images to Docker Hub or a private repository, so that you
   do not need to re-create them later.
 
-> ***NOTE:*** There is no need to use `MountFlags=slave` with Docker Engine 18.09 or 
+> **Note**: There is no need to use `MountFlags=slave` with Docker Engine 18.09 or
 > later because `dockerd` and `containerd` are in different mount namespaces. 
 
 ## Configure Docker with the `zfs` storage driver
@@ -263,7 +263,7 @@ There are several factors that influence the performance of Docker using the
   filesystems like ZFS. ZFS mitigates this by using a small block size of 128k.
   The ZFS intent log (ZIL) and the coalescing of writes (delayed writes) also
   help to reduce fragmentation. You can monitor fragmentation using
-  `zfs status`. However, there is no way to defragment ZFS without reformatting
+  `zpool status`. However, there is no way to defragment ZFS without reformatting
   and restoring the filesystem.
 
 - **Use the native ZFS driver for Linux**: The ZFS FUSE implementation is not

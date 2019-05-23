@@ -13,17 +13,19 @@ Before installing, be sure your infrastructure has these requirements.
 
 You can install UCP on-premises or on a cloud provider. Common requirements:
 
-* [Docker EE Engine](/ee/supported-platforms.md) version 18.09.0-ee-8;
-  values of `n` in the `-ee-<n>` suffix must be 8 or higher
+* [Docker EE Engine](/ee/supported-platforms.md) version {{ site.docker_ee_version }}
 * Linux kernel version 3.10 or higher
-* A static IP address
-
+* [A static IP address for each node in the cluster](/ee/ucp/admin/install/plan-installation/#static-ip-addresses)
+ 
 ### Minimum requirements
 
 * 8GB of RAM for manager nodes
 * 4GB of RAM for worker nodes
-* 4GB of free disk space for the `/var` partition for manager nodes
+* 2 vCPUs for manager nodes
+* 5GB of free disk space for the `/var` partition for manager nodes (A minimum of 6GB is recommended.)
 * 500MB of free disk space for the `/var` partition for worker nodes
+
+**Note**: Increased storage is required for Kubernetes manager nodes in UCP 3.1. If you are upgrading to UCP 3.1, refer to [Kubelet restarting after upgrade to Universal Control Plane 3.1](https://success.docker.com/article/kublet-restarting-after-upgrade-to-universal-control-plane-31) for information on how to increase the size of the `/var/lib/kubelet` filesystem.
 
 ### Recommended production requirements
 
@@ -31,7 +33,7 @@ You can install UCP on-premises or on a cloud provider. Common requirements:
  * 4 vCPUs for manager nodes
  * 25-100GB of free disk space
 
-Note that Windows container images are typically larger than Linux ontainer images. For
+Note that Windows container images are typically larger than Linux container images. For
 this reason, you should provision more local storage for Windows
 nodes and for any DTR setups that store Windows container images.
 
@@ -70,6 +72,7 @@ host types:
 | managers          | TCP 6443 (configurable) | External, Internal | Port for Kubernetes API server endpoint                                       |
 | managers, workers | TCP 6444                | Self               | Port for Kubernetes API reverse proxy                                         |
 | managers, workers | TCP, UDP 7946           | Internal           | Port for gossip-based clustering                                              |
+| managers, workers | TCP 9099                | Self               | Port for calico health check
 | managers, workers | TCP 10250               | Internal           | Port for Kubelet                                                              |
 | managers, workers | TCP 12376               | Internal           | Port for a TLS authentication proxy that provides access to the Docker Engine |
 | managers, workers | TCP 12378               | Self               | Port for Etcd reverse proxy                                                   |
@@ -82,6 +85,14 @@ host types:
 | managers          | TCP 12385               | Internal           | Port for the authentication service API                                       |
 | managers          | TCP 12386               | Internal           | Port for the authentication worker                                            |
 | managers          | TCP 12388               | Internal           | Internal Port for the Kubernetes API Server                                   |
+
+## Avoid firewall conflicts
+
+For SUSE Linux Enterprise Server 12 SP2 (SLES12), the `FW_LO_NOTRACK` flag is turned on by default in the openSUSE firewall. This speeds up packet processing on the loopback interface, and breaks certain firewall setups that need to redirect outgoing packets via custom rules on the local machine.
+
+To turn off the FW_LO_NOTRACK option, edit the `/etc/sysconfig/SuSEfirewall2` file and set `FW_LO_NOTRACK="no"`. Save the file and restart the firewall or reboot.
+
+For For SUSE Linux Enterprise Server 12 SP3, the default value for `FW_LO_NOTRACK` was changed to `no`.
 
 ## Enable ESP traffic
 

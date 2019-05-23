@@ -11,7 +11,7 @@ redirect_from:
 In Docker Engine - Enterprise 18.09, significant architectural improvements were made to the network 
 architecture in Swarm to increase the performance and scale of the built-in load balancing functionality. 
 
-> ***NOTE:*** These changes introduce new constraints to the Docker Engine - Enterprise upgrade process that, 
+> **Note**: These changes introduce new constraints to the Docker Engine - Enterprise upgrade process that,
 > if not correctly followed, can have impact on the availability of applications running on the Swarm. These 
 > constraints impact any upgrades coming from any version before 18.09 to version 18.09 or greater.
 
@@ -150,7 +150,7 @@ With an exhausted network, you can triage it using the following steps.
 
 1. SSH into a manager node on a cluster where your applications are running.
 
-2. Check the `docker service ls` output. It will diplay the service that is  unable to completely fill all its replicas such as: 
+2. Check the `docker service ls` output. It will display the service that is  unable to completely fill all its replicas such as: 
 
 ```
 ID                  NAME                MODE                REPLICAS   IMAGE               PORTS

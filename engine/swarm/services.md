@@ -565,7 +565,7 @@ services, you specify the number of replica tasks for the swarm manager to
 schedule onto available nodes. For global services, the scheduler places one
 task on each available node that meets the service's
 [placement constraints](#placement-constraints) and
-[resource requirements](#reserve-cpu-or-memory-for-a-service).
+[resource requirements](#reserve-memory-or-cpus-for-a-service).
 
 You control the type of service using the `--mode` flag. If you don't specify a
 mode, the service defaults to `replicated`. For replicated services, you specify
@@ -628,7 +628,7 @@ operator (`==` or `!=`). For replicated services, it is possible that all
 services run on the same node, or each node only runs one replica, or that some
 nodes don't run any replicas. For global services, the service runs on every
 node that meets the placement constraint and any [resource
-requirements](#reserve-cpu-or-memory-for-a-service).
+requirements](#reserve-memory-or-cpus-for-a-service).
 
 ```bash
 $ docker service create \
@@ -664,7 +664,7 @@ For more information on constraints, refer to the `docker service create`
 #### Placement preferences
 
 While [placement constraints](#placement-constraints) limit the nodes a service
-can run on, _placement preferences_ try to place services on appropriate nodes
+can run on, _placement preferences_ try to place tasks on appropriate nodes
 in an algorithmic way (currently, only spread evenly). For instance, if you
 assign each node a `rack` label, you can set a placement preference to spread
 the service evenly across nodes with the `rack` label, by value. This way, if

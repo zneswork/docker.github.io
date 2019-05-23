@@ -31,16 +31,22 @@ Specify your configuration settings in a TOML file.
 
 Use the `config-toml` API to export the current settings and write them to a file. Within the directory of a UCP admin user's [client certificate bundle](../../user-access/cli.md), the following command exports the current configuration for the UCP hostname `UCP_HOST` to a file named `ucp-config.toml`:
 
-```bash
-curl --cacert ca.pem --cert cert.pem --key key.pem https://UCP_HOST/api/ucp/config-toml > ucp-config.toml
+### Get an authtoken
+
+```
+AUTHTOKEN=$(curl --silent --insecure --data '{"username":"<username>","password":"<password>"}' https://UCP_HOST/auth/login | jq --raw-output .auth_token)
 ```
 
-Edit `ucp-config.toml`, then use the following `curl` command to import it back into
-UCP and apply your configuration changes:
+### Download config file
 
+```
+curl -X GET "https://UCP_HOST/api/ucp/config-toml" -H  "accept: application/toml" -H  "Authorization: Bearer $AUTHTOKEN" > ucp-config.toml
+```
 
-```bash
-curl --cacert ca.pem --cert cert.pem --key key.pem --upload-file ucp-config.toml https://UCP_HOST/api/ucp/config-toml
+### Upload config file
+
+```
+curl -X PUT -H  "accept: application/toml" -H "Authorization: Bearer $AUTHTOKEN" --upload-file 'path/to/ucp-config.toml' https://UCP_HOST/api/ucp/config-toml
 ```
 
 ## Apply an existing configuration file at install time
@@ -91,7 +97,7 @@ An array of tables that specifies the DTR instances that the current UCP instanc
 
 Included when you need to set custom API headers. You can repeat this section multiple times to specify multiple separate headers. If you include custom headers, you must specify both `name` and `value`.
 
-[custom_api_server_headers]
+[[custom_api_server_headers]]
 
 | Item | Description |
 | ----------- | ----------- |
@@ -111,6 +117,8 @@ Configures audit logging options for UCP components.
 ### scheduling_configuration table (optional)
 
 Specifies scheduling options and the default orchestrator for new nodes.
+
+> **Note**: If you run the `kubectl` command, such as `kubectl describe nodes`, to view scheduling rules on Kubernetes nodes, it does not reflect what is configured in UCP Admin settings. UCP uses taints to control container scheduling on nodes and is unrelated to kubectl's `Unschedulable` boolean flag.
 
 | Parameter                     | Required | Description                                                                                                                                |
 |:------------------------------|:---------|:-------------------------------------------------------------------------------------------------------------------------------------------|
@@ -138,6 +146,8 @@ Specifies whether DTR images require signing.
 | `require_signature_from` | no       | A string array that specifies users or teams which must sign images.                |
 
 ### log_configuration table (optional)
+
+> Note: This feature has been deprecated. Refer to the [Deprecation notice](https://docs.docker.com/ee/ucp/release-notes/#deprecation-notice) for additional information.
 
 Configures the logging options for UCP components.
 
@@ -181,17 +191,21 @@ components. Assigning these values overrides the settings in a container's
 | `metrics_retention_time`               | no       | Adjusts the metrics retention time.                                                                                                                                                              |
 | `metrics_scrape_interval`              | no       | Sets the interval for how frequently managers gather metrics from nodes in the cluster.                                                                                                          |
 | `metrics_disk_usage_interval`          | no       | Sets the interval for how frequently storage metrics are gathered. This operation can be expensive when large volumes are present.                                                               |
-| `rethinkdb_cache_size`                 | no       | Sets the size of the cache used by UCP's RethinkDB servers. The default is 512MB, but leaving this field empty or specifying `auto` instructs RethinkDB to determine a cache size automatically. |
+| `rethinkdb_cache_size`                 | no       | Sets the size of the cache used by UCP's RethinkDB servers. The default is 1GB, but leaving this field empty or specifying `auto` instructs RethinkDB to determine a cache size automatically. |
 | `cloud_provider`                       | no       | Set the cloud provider for the kubernetes cluster.                                                                                                                                               |
 | `pod_cidr`                             | yes      | Sets the subnet pool from which the IP for the Pod should be allocated from the CNI ipam plugin. Default is `192.168.0.0/16`.                                                                    |
 | `calico_mtu`                           | no       | Set the MTU (maximum transmission unit) size for the Calico plugin.                                                                                                                              |
 | `ipip_mtu`                             | no       | Set the IPIP MTU size for the calico IPIP tunnel interface.                                                                                                                                      |
 | `azure_ip_count`                       | no       | Set the IP count for azure allocator to allocate IPs per Azure virtual machine.                                                                                                                               |
+| `service-cluster-ip-range`             | yes      | Sets the subnet pool from which the IP for Services should be allocated. Default is `10.96.0.0/16`. 
 | `nodeport_range`                       | yes      | Set the port range that for Kubernetes services of type NodePort can be exposed in. Default is `32768-35535`.                                                                                    |
-| `custom_kube_api_server_flags`         | no       | Set the configuration options for the Kubernetes API server.                                                                                                                                     |
-| `custom_kube_controller_manager_flags` | no       | Set the configuration options for the Kubernetes controller manager.                                                                                                                            |
-| `custom_kubelet_flags`                 | no       | Set the configuration options for Kubelets.                                                                                                                                                      |
-| `custom_kube_scheduler_flags`          | no       | Set the configuration options for the Kubernetes scheduler.                                                                                                                                       |
+| `custom_kube_api_server_flags`         | no       | Set the configuration options for the Kubernetes API server. (dev)                                                                                                                                   |
+| `custom_kube_controller_manager_flags` | no       | Set the configuration options for the Kubernetes controller manager. (dev)                                                                                                                            |
+| `custom_kubelet_flags`                 | no       | Set the configuration options for Kubelets. (dev)                                                                                                                                                      |
+| `custom_kube_scheduler_flags`          | no       | Set the configuration options for the Kubernetes scheduler. (dev)                                                                                                                                      |
 | `local_volume_collection_mapping`      | no       | Store data about collections for volumes in UCP's local KV store instead of on the volume labels. This is used for enforcing access control on volumes.                                          |
 | `manager_kube_reserved_resources`      | no       | Reserve resources for Docker UCP and Kubernetes components which are running on manager nodes.                                                                                                   |
 | `worker_kube_reserved_resources`       | no       | Reserve resources for Docker UCP and Kubernetes components which are running on worker nodes.                                                                                                    |
+
+
+*dev indicates that the functionality is only for development and testing. Arbitrary Kubernetes configuration parameters are not tested and supported under the Docker Enterprise Software Support Agreement.

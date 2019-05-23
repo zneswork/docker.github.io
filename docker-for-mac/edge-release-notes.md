@@ -1,7 +1,7 @@
 ---
 description: Change log / release notes per Edge release
-keywords: Docker for Mac, edge, release notes
-title: Docker for Mac Edge release notes
+keywords: Docker Desktop for Mac, edge, release notes
+title: Docker Desktop for Mac Edge release notes
 ---
 
 Here are the main improvements and issues per edge release, starting with the
@@ -16,7 +16,81 @@ notes](release-notes) are also available. (Following the CE release model,
 releases, and download stable and edge product installers at [Download Docker
 for Mac](install.md#download-docker-for-mac).
 
-## Edge Releases of 2018
+## Edge Releases of 2019
+
+### Docker Community Edition 2.0.4.1 2019-05-07
+
+[Download](https://download.docker.com/mac/edge/34207/Docker.dmg)
+
+* Bug fixes and minor changes
+  - Upgrade QEMU from 2.8.0 to 3.1.0 to fix an emulation issue when building and running Java applications on Arm64 devices.
+
+### Docker Community Edition 2.0.4.0 2019-04-30
+
+[Download](https://download.docker.com/mac/edge/33772/Docker.dmg)
+
+* Upgrades
+  - [Docker 19.03.0-beta3](https://github.com/docker/docker-ce/releases/tag/v19.03.0-beta3)
+  - [Docker Compose 1.24.0](https://github.com/docker/compose/releases/tag/1.24.0)
+  - [Compose on Kubernetes 0.4.22](https://github.com/docker/compose-on-kubernetes/releases/tag/v0.4.22)
+  - [Kubernetes 1.14.1](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.14.md#changelog-since-v1141)
+
+* New
+  - App: Docker CLI plugin to configure, share, and install applications
+  
+    - Extend Compose files with metadata and parameters
+    - Reuse the same application across multiple environments (Development/QA/Staging/Production)
+    - Multi-orchestrator installation (Swarm or Kubernetes)
+    - Push/Pull/Promotion/Signing supported for application, with the same workflow as images
+    - Fully CNAB compliant
+    - Full support for Docker Contexts
+    
+  - Buildx (Tech Preview): Docker CLI plugin for extended build capabilities with BuildKit
+  
+    - Familiar UI from docker build
+    - Full BuildKit capabilities with container driver
+    - Multiple builder instance support
+    - Multi-node builds for cross-platform images (out-of-the-box support for linux/arm/v7 and linux/arm64)
+    - Parallel building of Compose files
+    - High-level build constructs with `bake`
+
+* Bug fixes and minor changes
+  - Truncate UDP DNS responses which are over 512 bytes in size
+
+### Docker Community Edition 2.0.3.0 2019-03-05
+
+[Download](https://download.docker.com/mac/edge/31778/Docker.dmg)
+
+* Upgrades
+  - [Docker 18.09.3](https://github.com/docker/docker-ce/releases/tag/v18.09.3)
+
+* Bug fixes and minor changes
+  - Fixed port 8080 that was used on localhost when starting Kubernetes. Fixes [docker/for-mac#3522](https://github.com/docker/for-mac/issues/3522)
+  - Error message improvements, do not propose to run diagnostics / reset to factory default when not appropriate.
+
+### Docker Community Edition 2.0.2.1 2019-02-15
+
+[Download](https://download.docker.com/mac/edge/31274/Docker.dmg)
+
+* Upgrades
+  - [Docker 18.09.2](https://github.com/docker/docker-ce/releases/tag/v18.09.2), fixes [CVE-2019-5736](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-5736)
+
+### Docker Community Edition 2.0.2.0 2019-02-06
+
+[Download](https://download.docker.com/mac/edge/30972/Docker.dmg)
+
+* Upgrades
+  - [Docker Compose 1.24.0-rc1](https://github.com/docker/compose/releases/tag/1.24.0-rc1)
+  - [Docker Machine 0.16.1](https://github.com/docker/machine/releases/tag/v0.16.1)
+  - [Compose on Kubernetes 0.4.18](https://github.com/docker/compose-on-kubernetes/releases/tag/v0.4.18)
+
+* New
+  - Rebranded UI
+  
+* Bug fixes and minor changes
+  - Kubernetes: use default maximum number of pods for kubelet. [docker/for-mac#3453](https://github.com/docker/for-mac/issues/3453)
+  - Fix DockerHelper crash. [docker/for-mac#3470](https://github.com/docker/for-mac/issues/3470)
+  - Fix binding of privileged ports with specified IP. [docker/for-mac#3464](https://github.com/docker/for-mac/issues/3464)
 
 ### Docker Community Edition 2.0.1.0 2019-01-11
 
@@ -37,6 +111,8 @@ for Mac](install.md#download-docker-for-mac).
   - Add 18.09 missing daemon options
   - Rename Docker for Mac to Docker Desktop
   - Partially open services ports if possible. [docker/for-mac#3438](https://github.com/docker/for-mac/issues/3438)
+
+## Edge Releases of 2018
 
 ### Docker Community Edition 2.0.0.0-mac82 2018-12-07
 
@@ -127,7 +203,7 @@ for Mac](install.md#download-docker-for-mac).
 * Upgrades
   - [LinuxKit v0.4](https://github.com/linuxkit/linuxkit/releases/tag/v0.4)
   - Linux Kernel 4.9.93 with CEPH, DRBD, RBD, MPLS_ROUTING and MPLS_IPTUNNEL enabled
-  - [Kubernetes 1.10.3](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.10.md#v1103). If Kubernetes is enabled, the upgrade will be performed automatically when starting Docker for Mac.
+  - [Kubernetes 1.10.3](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.10.md#v1103). If Kubernetes is enabled, the upgrade will be performed automatically when starting Docker Desktop for Mac.
 
 * Bug fixes and minor changes
   - Fix VPNKit memory leak. Fixes [moby/vpnkit#371](https://github.com/moby/vpnkit/issues/371)

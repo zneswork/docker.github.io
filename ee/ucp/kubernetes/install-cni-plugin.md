@@ -7,11 +7,11 @@ keywords: ucp, cli, administration, kubectl, Kubernetes, cni, Container Networki
 For Docker Universal Control Plane, [Project Calico](https://docs.projectcalico.org/v3.0/introduction/) 
 provides the secure networking functionality for the container communication with Kubernetes.
 
-UCP supports certified third-party Container Networking Interface (CNI) plugins. Docker EE installs the 
+Docker EE supports Calico and installs the 
 built-in [Calico](https://github.com/projectcalico/cni-plugin) plugin, but you can override that and 
 install a Docker certified plugin.
 
-***NOTE:*** The `--cni-installer-url` option is deprecated as of UCP 3.1. It is replaced by the `--unmanaged-cni` option. 
+> **Note**: The `--cni-installer-url` option is deprecated as of UCP 3.1. It is replaced by the `--unmanaged-cni` option.
 
 # Install UCP with a custom CNI plugin
 
@@ -27,9 +27,10 @@ docker container run --rm -it --name ucp \
    --unmanaged-cni <true|false> \
   --interactive
 ```
-***NOTE:*** Setting `--unmanaged-cni` to `true` value installs UCP without a managed CNI plugin. UCP and the 
-Kubernetes components will be running but pod-to-pod networking will not function until a CNI plugin is manually 
-installed. This will impact some functionality of UCP until a CNI plugin is running.
+
+> **Note**: Setting `--unmanaged-cni` to `true` value installs UCP without a managed CNI plugin. UCP and the
+> Kubernetes components will be running but pod-to-pod networking will not function until a CNI plugin is manually
+> installed. This will impact some functionality of UCP until a CNI plugin is running.
 
 You must provide a correct YAML installation file for the CNI plugin, but most
 of the default files work on Docker EE with no modification.
@@ -49,7 +50,7 @@ Use the following commands to get the YAML files for popular CNI plugins.
   CNI_URL="https://cloud.weave.works/k8s/net?k8s-version=Q2xpZW50IFZlcnNpb246IHZlcnNpb24uSW5mb3tNYWpvcjoiMSIsIE1pbm9yOiI5IiwgR2l0VmVyc2lvbjoidjEuOS4zIiwgR2l0Q29tbWl0OiJkMjgzNTQxNjU0NGYyOThjOTE5ZTJlYWQzYmUzZDA4NjRiNTIzMjNiIiwgR2l0VHJlZVN0YXRlOiJjbGVhbiIsIEJ1aWxkRGF0ZToiMjAxOC0wMi0wN1QxMjoyMjoyMVoiLCBHb1ZlcnNpb246ImdvMS45LjIiLCBDb21waWxlcjoiZ2MiLCBQbGF0Zm9ybToibGludXgvYW1kNjQifQpTZXJ2ZXIgVmVyc2lvbjogdmVyc2lvbi5JbmZve01ham9yOiIxIiwgTWlub3I6IjgrIiwgR2l0VmVyc2lvbjoidjEuOC4yLWRvY2tlci4xNDMrYWYwODAwNzk1OWUyY2UiLCBHaXRDb21taXQ6ImFmMDgwMDc5NTllMmNlYWUxMTZiMDk4ZWNhYTYyNGI0YjI0MjBkODgiLCBHaXRUcmVlU3RhdGU6ImNsZWFuIiwgQnVpbGREYXRlOiIyMDE4LTAyLTAxVDIzOjI2OjE3WiIsIEdvVmVyc2lvbjoiZ28xLjguMyIsIENvbXBpbGVyOiJnYyIsIFBsYXRmb3JtOiJsaW51eC9hbWQ2NCJ9Cg=="
   ```
   If you have kubectl available, for example by using
-  [Docker for Mac](/docker-for-mac/kubernetes.md), you can use the following
+  [Docker Desktop for Mac](/docker-for-mac/kubernetes.md), you can use the following
   command to get the URL for the [Weave](https://www.weave.works/) CNI plugin:
   ```bash
   # Get the URL for the Weave CNI plugin. 
@@ -76,7 +77,7 @@ commands on the Kubernetes master node to disable IPIP overlay tunneling.
 docker exec -it $(docker ps --filter name=k8s_calico-kube-controllers_calico-kube-controllers -q) sh
 
 # Download calicoctl
-wget https://github.com/projectcalico/calicoctl/releases/download/v3.1.1/calicoctl
+wget https://github.com/projectcalico/calicoctl/releases/download/v3.1.1/calicoctl && chmod +x calicoctl
 
 # Get the IP pool configuration. 
 ./calicoctl get ippool -o yaml > ippool.yaml

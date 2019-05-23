@@ -14,6 +14,7 @@ redirect_from:
 - /engine/installation/linux/docker-ce/
 - /engine/installation/linux/docker-ee/
 - /engine/installation/
+- /en/latest/installation/
 ---
 
 Docker Community Edition (CE) is ideal for developers and small
@@ -152,8 +153,8 @@ to choose the best installation path for you.
 
 | Platform                                                                    |      x86_64       |
 |:----------------------------------------------------------------------------|:-----------------:|
-| [Docker for Mac (macOS)](/docker-for-mac/install/)                        | {{ green-check }} |
-| [Docker for Windows (Microsoft Windows 10)](/docker-for-windows/install/) | {{ green-check }} |
+| [Docker Desktop for Mac (macOS)](/docker-for-mac/install/)                        | {{ green-check }} |
+| [Docker Desktop for Windows (Microsoft Windows 10)](/docker-for-windows/install/) | {{ green-check }} |
 
 #### Server
 

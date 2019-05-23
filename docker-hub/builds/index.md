@@ -129,9 +129,9 @@ For each source:
 
 * Specify the **Dockerfile location** as a path relative to the root of the source code repository. (If the Dockerfile is at the repository root, leave this path set to `/`.)
 
-> **Note:** When Docker Hub pulls a branch from a source code repository, it performs
-a shallow clone (only the tip of the specified branch).  Refer to [Advanced options for Autobuild and Autotest](advanced.md)
-for more information.
+> **Note**: When Docker Hub pulls a branch from a source code repository, it performs
+> a shallow clone (only the tip of the specified branch).  Refer to [Advanced options for Autobuild and Autotest](advanced.md)
+> for more information.
 
 ### Environment variables for builds
 
@@ -291,25 +291,6 @@ tag** field.
 You could also use capture groups to build and label images that come from various sources. For example, you might have
 
 `/(alice|bob)-v([0-9.]+)/` -->
-
-### Create multiple Docker tags from a single build
-
-By default, each build rule builds a source branch or tag into a Docker image,
-and then tags that image with a single tag. However, you can also create several
-tagged Docker images from a single build rule.
-
-To create multiple tags from a single build rule, enter a comma-separated list
-of tags in the **Docker tag** field in the build rule. If an image with that tag
-already exists, Docker Hub overwrites the image when the build completes
-successfully. If you have automated tests configured, the build must pass these
-tests as well before the image is overwritten. You can use both regex references
-and plain text values in this field simultaneously.
-
-For example if you want to update the image tagged with `latest` at the same
-time as you a tag an image for a specific version, you could enter
-`{sourceref},latest` in the Docker Tag field.
-
-If you need to update a tag _in another repository_, use [a post_build hook](advanced.md#push-to-multiple-repos) to push to a second repository.
 
 ## Build repositories with linked private submodules
 
